@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "mintwit"
+version = "0.1.0"
+description = "minimal twitter clone"
+authors = ["Shahriar <me@shahriar.ee>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^3.0.0"
+flask-sqlalchemy = "^3.1.1"
+
+
+[tool.poetry.group.dev.dependencies]
+requests = "^2.31.0"
+prettytable = "^3.9.0"
+prompt-toolkit = "^3.0.43"
+colorama = "^0.4.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
