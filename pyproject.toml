@@ -4,9 +4,10 @@ version = "0.1.0"
 description = "minimal twitter clone"
 authors = ["Shahriar <me@shahriar.ee>"]
 readme = "README.md"
+packages = [{ include = "mintwit" }]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.9.0,<3.13"
 flask = "^3.0.0"
 flask-sqlalchemy = "^3.1.1"
 
