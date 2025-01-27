@@ -5,7 +5,7 @@ import requests
 
 class SocialNetworkCLI(cmd.Cmd):
     prompt = "(social-network) "
-    api_url = "http://localhost:5000"  # Change if your API is hosted elsewhere
+    api_url = "http://localhost:8080"  # Change if your API is hosted elsewhere
     current_user = None
 
     def do_exit(self, arg):
