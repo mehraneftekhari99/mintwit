@@ -1,0 +1,16 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environments
+.venv/
+
+# Ignore system files
+*.DS_Store
+
+# Ignore git files
+.git/
+.gitignore
+
+# Ignore Docker cache
+docker-compose.yml

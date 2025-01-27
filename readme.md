@@ -12,6 +12,9 @@ A very simple and minial Twitter clone/simulation.
 1. Run the application using `poetry run python app.py`.
 2. Use the api with your code or `poetry run python cli2.py`
 
+## Dockerfile
+
+You can build and use the Dockerfile provided. The app is exposed on port 8080 and the sqlite DB is located at /app/instance.
 
 ## License
 
