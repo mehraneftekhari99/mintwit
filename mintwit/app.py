@@ -1,7 +1,13 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
 import datetime
+import logging
+from time import strftime
+
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 from waitress import serve
+
+logger = logging.getLogger("waitress")
+logger.setLevel(logging.INFO)
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///social_network.sqlite"
@@ -27,6 +33,21 @@ class Follow(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
     followee_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc))
+
+
+@app.after_request
+def after_request(response):
+    timestamp = strftime("[%Y-%b-%d %H:%M]")
+    logger.info(
+        "%s %s %s %s %s %s",
+        timestamp,
+        request.remote_addr,
+        request.method,
+        request.scheme,
+        request.full_path,
+        response.status,
+    )
+    return response
 
 
 @app.route("/register", methods=["POST"])
@@ -75,7 +96,10 @@ def get_followers():
     followers = Follow.query.filter_by(followee_id=user_id).all()
     follower_ids = [follower.follower_id for follower in followers]
     follower_users = User.query.filter(User.id.in_(follower_ids)).all()
-    return jsonify({"followers": [{"id": user.id, "username": user.username} for user in follower_users]}), 200
+    return (
+        jsonify({"followers": [{"id": user.id, "username": user.username} for user in follower_users]}),
+        200,
+    )
 
 
 @app.route("/following", methods=["GET"])
@@ -84,7 +108,10 @@ def get_following():
     following = Follow.query.filter_by(follower_id=user_id).all()
     following_ids = [followee.followee_id for followee in following]
     following_users = User.query.filter(User.id.in_(following_ids)).all()
-    return jsonify({"following": [{"id": user.id, "username": user.username} for user in following_users]}), 200
+    return (
+        jsonify({"following": [{"id": user.id, "username": user.username} for user in following_users]}),
+        200,
+    )
 
 
 @app.route("/tweet", methods=["POST"])
@@ -131,4 +158,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
-    serve(app, listen="*:5000")
+    serve(app, host="0.0.0.0", port=8080)

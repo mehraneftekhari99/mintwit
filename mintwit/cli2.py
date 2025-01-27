@@ -1,4 +1,5 @@
 import cmd
+
 import requests
 
 
@@ -54,9 +55,7 @@ class SocialNetworkCLI(cmd.Cmd):
         if not content:
             print("Content is required.")
             return
-        response = requests.post(
-            f"{self.api_url}/tweet", json={"user_id": self.current_user, "content": content}
-        )
+        response = requests.post(f"{self.api_url}/tweet", json={"user_id": self.current_user, "content": content})
         if response.status_code == 201:
             print("Tweet posted.")
         else:
@@ -147,9 +146,7 @@ class SocialNetworkCLI(cmd.Cmd):
         args = arg.split()
         page = int(args[0]) if args and args[0].isdigit() else 1
         per_page = int(args[1]) if len(args) > 1 and args[1].isdigit() else 10
-        response = requests.get(
-            f"{self.api_url}/explore", params={"page": page, "per_page": per_page}
-        )
+        response = requests.get(f"{self.api_url}/explore", params={"page": page, "per_page": per_page})
         if response.status_code == 200:
             tweets = response.json()["tweets"]
             if not tweets:
